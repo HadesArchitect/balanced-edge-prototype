@@ -1,0 +1,50 @@
+balancer_1:
+  build: ./balancer
+  links:
+  - consul
+  ports:
+  - "80:80"
+  hostname: balancer_1
+
+balancer_2:
+  build: ./balancer
+  links:
+  - consul
+  ports:
+  - "81:80"
+  hostname: balancer_2
+
+cache:
+  build: ./cache
+  ports:
+  - "80"
+  environment:
+    SERVICE_80_NAME: http
+    SERVICE_NAME: cache
+    SERVICE_TAGS: production
+
+app:
+  build: ./app
+  ports:
+  - "80"
+  environment:
+    SERVICE_80_NAME: http
+    SERVICE_NAME: app
+    SERVICE_TAGS: production
+
+consul:
+  image: progrium/consul:latest
+  command: -server -bootstrap -advertise 172.17.42.1
+  ports:
+  - "8300:8300"
+  - "8400:8400"
+  - "8500:8500"
+  - "8600:53/udp"
+
+registrator:
+  image: progrium/registrator:latest
+  command: consul://consul:8500
+  links:
+  - consul
+  volumes:
+  - "/var/run/docker.sock:/tmp/docker.sock"
