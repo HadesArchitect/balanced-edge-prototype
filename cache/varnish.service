@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec /usr/sbin/varnishd
+exec /usr/sbin/varnishd -f /etc/varnish/varnish.conf

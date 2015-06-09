@@ -1,21 +1,23 @@
-balancer_1:
-  build: ./balancer
-  links:
-  - consul
-  ports:
-  - "80:80"
-  hostname: balancer_1
-
-balancer_2:
+balancer1:
   build: ./balancer
   links:
   - consul
   ports:
   - "81:80"
-  hostname: balancer_2
+  hostname: balancer1
+
+# balancer2:
+#  build: ./balancer
+#  links:
+#  - consul
+#  ports:
+#  - "82:80"
+#  hostname: balancer2
 
 cache:
   build: ./cache
+  links:
+  - consul
   ports:
   - "80"
   environment:
