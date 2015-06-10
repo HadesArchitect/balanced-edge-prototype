@@ -1,14 +1,16 @@
+vcl 4.0;
+
 import directors;
-{{range service "production.app"}}
-backend {{.Name}}_{{.ID}} {
+{{range service "app"}}
+backend {{.Name}}_{{.Node}}_{{.Port}} {
     .host = "{{.Address}}";
     .port = "{{.Port}}";
 }{{end}}
 
 sub vcl_init {
   new bar = directors.round_robin();
-{{range service "production.app"}}
-  bar.add_backend({{.Name}}_{{.ID}});{{end}}
+{{range service "app"}}
+  bar.add_backend({{.Name}}_{{.Node}}_{{.Port}});{{end}}
 }
 
 sub vcl_recv {
