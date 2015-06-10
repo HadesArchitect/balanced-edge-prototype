@@ -3,16 +3,16 @@ balancer1:
   links:
   - consul
   ports:
-  - "81:80"
+  - "80:80"
   hostname: balancer1
 
-# balancer2:
-#  build: ./balancer
-#  links:
-#  - consul
-#  ports:
-#  - "82:80"
-#  hostname: balancer2
+balancer2:
+  build: ./balancer
+  links:
+  - consul
+  ports:
+  - "81:80"
+  hostname: balancer2
 
 cache:
   build: ./cache
@@ -23,7 +23,6 @@ cache:
   environment:
     SERVICE_80_NAME: http
     SERVICE_NAME: cache
-    SERVICE_TAGS: production
 
 app:
   build: ./app
@@ -32,7 +31,6 @@ app:
   environment:
     SERVICE_80_NAME: http
     SERVICE_NAME: app
-    SERVICE_TAGS: production
 
 consul:
   image: progrium/consul:latest
