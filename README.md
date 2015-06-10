@@ -14,7 +14,15 @@
 10. Visit balancers at http://DOCKER_IP or http://DOCKER_IP:81
 11. Visit another http-based services (app & cache) with http://DOCKER_IP:PORT_FROM_POINT_8
 
-Please, before any next launches of the prototype don't forget to:
+*To play with automatic service failover*
+
+1. Add some instances of a tested layer (app or cache).
+2. Drop previous instances of the layer (keep at least one).
+3. Check the system - it's still works.
+
+(Notice that Entry Points could be only switchovered in that scheme)
+
+*Please, before any next launches of the prototype don't forget to:*
 
 1. docker-compose stop
 2. docker-compose rm
