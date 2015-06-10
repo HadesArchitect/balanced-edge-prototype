@@ -1,5 +1,7 @@
 # Prototype of load balanced edge
 
+## Docker single-host mode
+
 *To make some experiments or examine:*
 
 1. Install https://www.docker.com/ and http://docs.docker.com/compose/
@@ -27,3 +29,9 @@
 1. docker-compose stop
 2. docker-compose rm
 3. docker-compose build
+
+## Vagrant double-host mode
+
+1. Install https://www.vagrantup.com/ and https://www.virtualbox.org/
+2. vagrant up host-a host-b
+3. [IN PROGRESS]
