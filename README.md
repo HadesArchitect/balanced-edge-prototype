@@ -15,8 +15,7 @@
 11. Visit another http-based services (app & cache) with http://DOCKER_IP:PORT_FROM_POINT_8
 
 Please, before any next launches of the prototype don't forget to:
+
 1. docker-compose stop
 2. docker-compose rm
 3. docker-compose build
-and only after that
-4. docker-compose up -d
