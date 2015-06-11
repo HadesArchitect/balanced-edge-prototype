@@ -2,15 +2,19 @@ Vagrant.configure(2) do |config|
 
   config.vm.box = "ubuntu/trusty64"
 
-  config.vm.define "host-a" do |web|
-      config.vm.hostname = "host-a"
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+
+  config.vm.define "host-a" do |node|
+      node.vm.hostname = "host-a"
+      node.vm.network "private_network", ip: "10.0.0.10"
   end
 
-  config.vm.define "host-b" do |db|
-      config.vm.hostname = "host-b"      
+  config.vm.define "host-b" do |node|
+      node.vm.hostname = "host-b"      
+      node.vm.network "private_network", ip: "10.0.0.11"
   end
 
-  config.vm.network "private_network", type: "dhcp"
   # config.vm.network "public_network", bridge: "wlan0"
 
   # config.vm.synced_folder "../data", "/vagrant_data"

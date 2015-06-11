@@ -33,5 +33,10 @@
 ## Vagrant double-host mode
 
 1. Install https://www.vagrantup.com/ and https://www.virtualbox.org/
-2. vagrant up host-a host-b
-3. [IN PROGRESS]
+2. Run *vagrant plugin install vagrant-hostmanager* 
+3. Clone the repository: git clone git@github.com:HadesArchitect/balanced-edge-prototype.git edge
+4. Swith to prototype directory: cd edge
+5. vagrant up host-a host-b
+6. vagrant hostmanager
+
+
