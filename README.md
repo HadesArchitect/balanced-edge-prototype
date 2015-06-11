@@ -39,5 +39,38 @@
 5. *vagrant up host-a host-b*
 6. *vagrant hostmanager* to set up /etc/hosts
 
+To start consul claster:
 
+[todo: start services automatically]
 
+1. *vagrant ssh host-a*
+2. run cluster leader *docker run -h $HOSTNAME -p 10.0.0.10:8300:8300  -p 10.0.0.10:8301:8301  -p 10.0.0.10:8301:8301/udp -p 10.0.0.10:8302:8302 -p 10.0.0.10:8302:8302/udp -p 10.0.0.10:8400:8400 -p 10.0.0.10:8500:8500 -p 172.17.42.1:53:53 -p 172.17.42.1:53:53/udp -d progrium/consul -server -advertise 10.0.0.10 -bootstrap-expect 2*
+3. exit
+4. *vagrant ssh host-b*
+5. run cluster member *docker run -h $HOSTNAME -p 10.0.0.11:8300:8300  -p 10.0.0.11:8301:8301  -p 10.0.0.11:8301:8301/udp -p 10.0.0.11:8302:8302 -p 10.0.0.11:8302:8302/udp -p 10.0.0.11:8400:8400 -p 10.0.0.11:8500:8500 -p 172.17.42.1:53:53 -p 172.17.42.1:53:53/udp -d progrium/consul -server -advertise 10.0.0.11 -join 10.0.0.10*
+6. *exit*
+
+If everything is done right, consul cluster is ready to register services. It could be checked with:
+
+1. *docker ps* to get container ID
+2. *docker logs CONTAINER_ID*
+
+Typical output looks like:
+
+```
+    2015/06/11 13:34:22 [ERR] agent: failed to sync remote state: No cluster leader
+    2015/06/11 13:34:38 [INFO] serf: EventMemberJoin: host-b 10.0.0.11
+    2015/06/11 13:34:38 [INFO] consul: adding server host-b (Addr: 10.0.0.11:8300) (DC: dc1)
+    2015/06/11 13:34:38 [INFO] consul: Attempting bootstrap with nodes: [10.0.0.10:8300 10.0.0.11:8300]
+    2015/06/11 13:34:39 [WARN] raft: Heartbeat timeout reached, starting election
+    2015/06/11 13:34:39 [INFO] raft: Node at 10.0.0.10:8300 [Candidate] entering Candidate state
+    2015/06/11 13:34:39 [WARN] raft: Remote peer 10.0.0.11:8300 does not have local node 10.0.0.10:8300 as a peer
+    2015/06/11 13:34:39 [INFO] raft: Election won. Tally: 2
+    2015/06/11 13:34:39 [INFO] raft: Node at 10.0.0.10:8300 [Leader] entering Leader state
+    2015/06/11 13:34:39 [INFO] consul: cluster leadership acquired
+    2015/06/11 13:34:39 [INFO] consul: New leader elected: host-a
+    2015/06/11 13:34:39 [INFO] raft: pipelining replication to peer 10.0.0.11:8300
+    2015/06/11 13:34:39 [INFO] consul: member 'host-a' joined, marking health alive
+    2015/06/11 13:34:39 [INFO] consul: member 'host-b' joined, marking health alive
+    2015/06/11 13:34:39 [INFO] agent: Synced service 'consul'
+```
