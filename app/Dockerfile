@@ -2,12 +2,12 @@ FROM ubuntu:14.04
 MAINTAINER Aleksandr Volochnev <a.volochnev@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV SERVICE_NAME app
 
-RUN apt-get update && apt-get install -y nano apache2 php5
+RUN apt-get install -y php5-cgi php5-cli php5
 
-RUN rm -v /etc/apache2/sites-enabled/*
-ADD app.conf /etc/apache2/sites-enabled/
 ADD index.php /var/www/app/
-RUN sed -i "s/Listen 80/Listen 8090/" /etc/apache2/ports.conf
 
-CMD /usr/sbin/apache2ctl -D FOREGROUND
+EXPOSE 8090
+
+CMD php -S 0.0.0.0:8090 -t /var/www/app
