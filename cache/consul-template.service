@@ -1,5 +1,5 @@
 #!/bin/sh
 
 exec consul-template \
-     -consul=10.0.0.10:8500 \
+     -consul=$CONSUL_IP:8500 \
      -template "/etc/consul-templates/varnish.ctmpl:/etc/varnish/varnish.conf:sv hup varnish"

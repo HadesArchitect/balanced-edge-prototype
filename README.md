@@ -55,11 +55,16 @@ Run **docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $HOSTNAME glider
 
 Now auxillary services are ready and we could start primary ones. Let's start with backends - processors. Run **docker run -d -p 8090:8090 hadesarchitect/web-app:devel** on every node. After that you could see new services in consul web-interface - http://host-a:8500/ and visit apps personally: http://host-b:8090/.
 
-Next step is cache layer. Run **docker run -d -p 8089:8089 hadesarchitect/cache:devel** on every node. Take a look at a running service in consul web-interface and visit http://host-b:8089/. 
+Next step is cache layer. Run:
+
+1. host-a: **docker run -d -p 8089:8089 -e "CONSUL_IP=10.0.0.10" hadesarchitect/cache:devel**
+2. host-b: **docker run -d -p 8089:8089 -e "CONSUL_IP=10.0.0.11" hadesarchitect/cache:devel**
+
+Take a look at a running service in consul web-interface and visit http://host-b:8089/. 
 
 Finally, let's start balancers. Run:
 
-1. host-a: **docker run -d -p 80:80 -e "SERVICE_TAGS=main" hadesarchitect/balancer:devel**
-2. host-b: **docker run -d -p 80:80 -e "SERVICE_TAGS=backup" hadesarchitect/balancer:devel**
+1. host-a: **docker run -d -p 80:80 -e "SERVICE_TAGS=main" -e "CONSUL_IP=10.0.0.10" hadesarchitect/balancer:devel**
+2. host-b: **docker run -d -p 80:80 -e "SERVICE_TAGS=backup" -e "CONSUL_IP=10.0.0.11" hadesarchitect/balancer:devel**
 
 As promised, we could see a new service in conul registry and visit a http://host-a or http://host-b.
