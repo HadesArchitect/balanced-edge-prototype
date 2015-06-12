@@ -79,3 +79,10 @@ Typical output looks like:
 Normally we will register services in consul through consul agent, but in this case it's much easier to use register and keep some time.
 
 Run *docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $HOSTNAME gliderlabs/registrator consul://10.0.0.10:8500* on both hosts.
+
+Now auxillary services are ready and we could start primary ones. Let's start with backends - processors.
+
+1. build **docker build -t local/app /vagrant/app/**
+2. and run **docker run -d -p 8090:8090 -e "SERVICE_NAME=app" local/app**
+ 
+on every node.
