@@ -1,44 +1,15 @@
 # Prototype of load balanced edge
 
-## Docker single-host mode
-
-*To make some experiments or examine:*
-
-1. Install https://www.docker.com/ and http://docs.docker.com/compose/
-2. Clone the repository: **git clone git@github.com:HadesArchitect/balanced-edge-prototype.git edge**
-3. Swith to prototype directory: **cd edge**
-4. Run docker-compose: **docker-compose up** (use option -d to run in detached mode)
-5. Please wait, initial launch could take some time
-6. To scale processing layer use: **docker-compose scale app=N** (N stands for integer) 
-7. To scale caching layer use: **docker-compose scale cache=N**
-8. Check actual situation with: **docker-compose ps**
-9. get your docker IP with:  **ifconfig docker0 | grep inet.addr**
-10. Visit balancers at http://DOCKER_IP or http://DOCKER_IP:81
-11. Visit another http-based services (app & cache) with http://DOCKER_IP:PORT_FROM_POINT_8
-
-*To play with automatic service failover*
-
-1. Add some instances of a tested layer (app or cache).
-2. Drop previous instances of the layer (keep at least one).
-3. Check the system - it's still works.
-
-(Notice that Entry Points could be only switchovered in that scheme)
-
-*Please, before any next launches of the prototype don't forget to:*
-
-1. **docker-compose stop**
-2. **docker-compose rm**
-3. **docker-compose build**
-
 ## Vagrant double-host mode
+
+### Installation
 
 1. Install https://www.vagrantup.com/ and https://www.virtualbox.org/
 2. Run **vagrant plugin install vagrant-hostmanager** 
 3. Clone the repository: **git clone git@github.com:HadesArchitect/balanced-edge-prototype.git edge**
 4. Swith to prototype directory: **cd edge**
-5. Checkout to "vagrant" branch: **git checkout vagrant**
-6. **vagrant up host-a host-b**
-7. **vagrant hostmanager** to set up /etc/hosts
+5. **vagrant up host-a host-b**
+6. **vagrant hostmanager** to set up /etc/hosts (Could require password to set up host machine /etc/hosts)
 
 To start consul claster:
 
@@ -85,3 +56,10 @@ Run **docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $HOSTNAME glider
 Now auxillary services are ready and we could start primary ones. Let's start with backends - processors. Run **docker run -d -p 8090:8090 hadesarchitect/web-app:devel** on every node. After that you could see new services in consul web-interface - http://host-a:8500/ and visit apps personally: http://host-b:8090/.
 
 Next step is cache layer. Run **docker run -d -p 8089:8089 hadesarchitect/cache:devel** on every node. Take a look at a running service in consul web-interface and visit http://host-b:8089/. 
+
+Finally, let's start balancers. Run:
+
+1. host-a: **docker run -d -p 80:80 -e "SERVICE_TAGS=main" hadesarchitect/balancer:devel**
+2. host-b: **docker run -d -p 80:80 -e "SERVICE_TAGS=backup" hadesarchitect/balancer:devel**
+
+As promised, we could see a new service in conul registry and visit a http://host-a or http://host-b.
