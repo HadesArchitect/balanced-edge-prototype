@@ -1,9 +1,11 @@
 FROM nginx:1.7
 MAINTAINER Aleksandr Volochnev <a.volochnev@gmail.com>
 
-RUN DEBIAN_FRONTEND=noninteractive \
-    apt-get update -qq && \
-    apt-get -y install curl runit
+ENV DEBIAN_FRONTEND=noninteractive
+ENV SERVICE_NAME=balancer
+
+RUN apt-get update -qq
+RUN apt-get -y install curl runit
 
 RUN rm -rf /var/lib/apt/lists/*
 
