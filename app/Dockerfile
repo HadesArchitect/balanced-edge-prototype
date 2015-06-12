@@ -4,9 +4,10 @@ MAINTAINER Aleksandr Volochnev <a.volochnev@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 ENV SERVICE_NAME app
 
-RUN apt-get install -y php5-cgi php5-cli php5
+RUN apt-get install -y php5-cli php5-gd
 
 ADD index.php /var/www/app/
+ADD cat.jpg /var/www/app/
 
 EXPOSE 8090
 
