@@ -1,5 +1,5 @@
 #!/bin/sh
 
 exec consul-template \
-     -consul=consul:8500 \
+     -consul=10.0.0.10:8500 \
      -template "/etc/consul-templates/nginx.ctmpl:/etc/nginx/conf.d/app.conf:sv hup nginx"
