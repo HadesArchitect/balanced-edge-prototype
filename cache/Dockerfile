@@ -2,6 +2,7 @@ FROM ubuntu:14.04
 MAINTAINER Aleksandr Volochnev <a.volochnev@gmail.com>
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV SERVICE_NAME cache
 
 RUN apt-get update -qq
 RUN apt-get -y install apt-transport-https curl runit

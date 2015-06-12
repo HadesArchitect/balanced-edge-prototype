@@ -2,7 +2,7 @@ vcl 4.0;
 
 import directors;
 {{range service "app"}}
-backend {{.Name}}_{{.Node}}_{{.Port}} {
+backend {{.Name|replaceAll "-" "_"}}_{{.Node|replaceAll "-" "_"}}_{{.Port}} {
     .host = "{{.Address}}";
     .port = "{{.Port}}";
 }{{end}}
@@ -10,7 +10,7 @@ backend {{.Name}}_{{.Node}}_{{.Port}} {
 sub vcl_init {
   new bar = directors.round_robin();
 {{range service "app"}}
-  bar.add_backend({{.Name}}_{{.Node}}_{{.Port}});{{end}}
+  bar.add_backend({{.Name|replaceAll "-" "_"}}_{{.Node|replaceAll "-" "_"}}_{{.Port}});{{end}}
 }
 
 sub vcl_recv {

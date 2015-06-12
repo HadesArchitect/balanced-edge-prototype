@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec varnishd -f /etc/varnish/varnish.conf -a :80 -F
+exec varnishd -f /etc/varnish/varnish.conf -a :8089 -F
