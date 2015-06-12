@@ -36,8 +36,9 @@
 2. Run **vagrant plugin install vagrant-hostmanager** 
 3. Clone the repository: **git clone git@github.com:HadesArchitect/balanced-edge-prototype.git edge**
 4. Swith to prototype directory: **cd edge**
-5. **vagrant up host-a host-b**
-6. **vagrant hostmanager** to set up /etc/hosts
+5. Checkout to "vagrant" branch: **git checkout vagrant**
+6. **vagrant up host-a host-b**
+7. **vagrant hostmanager** to set up /etc/hosts
 
 To start consul claster:
 
@@ -74,3 +75,14 @@ Typical output looks like:
 2015/06/11 13:34:39 [INFO] consul: member 'host-b' joined, marking health alive
 2015/06/11 13:34:39 [INFO] agent: Synced service 'consul'
 ```
+
+Normally we will register services in consul through consul agent, but in this case it's much easier to use register and keep some time.
+
+Run *docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $HOSTNAME gliderlabs/registrator consul://10.0.0.10:8500* on both hosts.
+
+Now auxillary services are ready and we could start primary ones. Let's start with backends - processors.
+
+1. build **docker build -t local/app /vagrant/app/**
+2. and run **docker run -d -p 8090:8090 -e "SERVICE_NAME=app" local/app**
+ 
+on every node.
