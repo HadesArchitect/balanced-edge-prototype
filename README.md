@@ -78,7 +78,7 @@ Typical output looks like:
 
 Normally we will register services in consul through consul agent, but in this case it's much easier to use register and keep some time.
 
-Run *docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $HOSTNAME gliderlabs/registrator consul://10.0.0.10:8500* on both hosts.
+Run **docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $HOSTNAME gliderlabs/registrator consul://10.0.0.10:8500** on host A and **docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $HOSTNAME gliderlabs/registrator consul://10.0.0.11:8500** on host B.
 
 Now auxillary services are ready and we could start primary ones. Let's start with backends - processors.
 
