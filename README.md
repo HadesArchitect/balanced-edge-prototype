@@ -75,3 +75,7 @@ Typical output looks like:
 2015/06/11 13:34:39 [INFO] consul: member 'host-b' joined, marking health alive
 2015/06/11 13:34:39 [INFO] agent: Synced service 'consul'
 ```
+
+Normally we will register services in consul through consul agent, but in this case it's much easier to use register and keep some time.
+
+Run *docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $HOSTNAME gliderlabs/registrator consul://10.0.0.10:8500* on both hosts.
