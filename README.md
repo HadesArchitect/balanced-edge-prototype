@@ -82,7 +82,6 @@ Run **docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $HOSTNAME glider
 
 Now auxillary services are ready and we could start primary ones. Let's start with backends - processors.
 
-1. build **docker build -t local/app /vagrant/app/**
-2. and run **docker run -d -p 8090:8090 -e "SERVICE_NAME=app" local/app**
+1. run **docker run -d -p 8090:8090 hadesarchitect/web-app:devel**
  
 on every node.
