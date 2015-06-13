@@ -15,6 +15,11 @@ Vagrant.configure(2) do |config|
       node.vm.network "private_network", ip: "10.0.0.11"
   end
 
+  config.vm.define "host-c" do |node|
+      node.vm.hostname = "host-c"
+      node.vm.network "private_network", ip: "10.0.0.12"
+  end
+
   # config.vm.network "public_network", bridge: "wlan0"
 
   # config.vm.synced_folder "../data", "/vagrant_data"
