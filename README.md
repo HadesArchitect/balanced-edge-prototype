@@ -2,7 +2,7 @@
 
 ## Vagrant double-host mode
 
-### Installation
+### Setup
 
 1. Install https://www.vagrantup.com/ and https://www.virtualbox.org/
 2. Run **vagrant plugin install vagrant-hostmanager** 
@@ -15,7 +15,7 @@ To start consul claster:
 
 [todo: start services automatically]
 
-1. **vagrant ssh host-a**
+1.  **vagrant ssh host-a**
 2. run cluster leader **docker run -h $HOSTNAME -p 10.0.0.10:8300:8300  -p 10.0.0.10:8301:8301  -p 10.0.0.10:8301:8301/udp -p 10.0.0.10:8302:8302 -p 10.0.0.10:8302:8302/udp -p 10.0.0.10:8400:8400 -p 10.0.0.10:8500:8500 -p 172.17.42.1:53:53 -p 172.17.42.1:53:53/udp -d progrium/consul -server -advertise 10.0.0.10 -bootstrap-expect 2**
 3. **exit**
 4. **vagrant ssh host-b**
@@ -68,3 +68,23 @@ Finally, let's start balancers. Run:
 2. host-b: **docker run -d -p 80:80 -e "SERVICE_TAGS=backup" -e "CONSUL_IP=10.0.0.11" hadesarchitect/balancer:devel**
 
 As promised, we could see a new service in conul registry and visit a http://host-a or http://host-b.
+
+### Adding a new Host
+
+#### Initial setup
+
+1. **vagrant up host-c**
+2. **vagrant hostmanager**
+3. **vagrant ssh host-c**
+4. **docker run -h $HOSTNAME -p 10.0.0.12:8300:8300  -p 10.0.0.12:8301:8301  -p 10.0.0.12:8301:8301/udp -p 10.0.0.12:8302:8302 -p 10.0.0.12:8302:8302/udp -p 10.0.0.12:8400:8400 -p 10.0.0.12:8500:8500 -p 172.17.42.1:53:53 -p 172.17.42.1:53:53/udp -d progrium/consul -server -advertise 10.0.0.12 -join 10.0.0.10**
+5. **docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $HOSTNAME gliderlabs/registrator consul://10.0.0.12:8500**
+
+#### Requested services
+
+Add requested services, one or all.
+
+Processor: **docker run -d -p 8090:8090 hadesarchitect/web-app:devel**
+Cache: **docker run -d -p 8089:8089 -e "CONSUL_IP=10.0.0.12" hadesarchitect/cache:devel**
+Balancer: **docker run -d -p 80:80 -e "SERVICE_TAGS=backup" -e "CONSUL_IP=10.0.0.12" hadesarchitect/balancer:devel**
+
+Check configuration of the existing LBs and caches, they have to take into action new available upstreams - add them to config and gracefully reload.
