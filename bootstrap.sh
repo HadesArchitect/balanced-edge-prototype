@@ -10,3 +10,4 @@ curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
 docker pull progrium/consul
+docker pull gliderlabs/registrator
