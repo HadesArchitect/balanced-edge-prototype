@@ -1,0 +1,18 @@
+#balancer:
+#  build: ./balancer
+#  ports:
+#    - "80:80"
+
+app:
+  build: ./app
+#  ports:
+#    - "80:80"
+  links:
+    - db
+  volumes:
+    - ./app:/var/www/app:rw
+
+db:
+  image: mysql:5.7
+  environment:
+    MYSQL_ROOT_PASSWORD: "qwe"
