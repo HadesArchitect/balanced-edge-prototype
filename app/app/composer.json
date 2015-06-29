@@ -1,0 +1,12 @@
+{
+    "name": "edge/app",
+    "require": {
+        "silex/silex": "~1.3"
+    },
+    "authors": [
+        {
+            "name": "Aleksandr Volochnev",
+            "email": "a.volochnev@gmail.com"
+        }
+    ]
+}

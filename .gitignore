@@ -1,1 +1,4 @@
 .vagrant/
+app/app/composer.lock
+app/app/vendor/*
+

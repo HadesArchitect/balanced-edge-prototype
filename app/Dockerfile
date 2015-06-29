@@ -37,5 +37,5 @@ RUN mkdir /etc/service/hhvm
 ADD hhvm.sh /etc/service/hhvm/run
 RUN chmod +x /etc/service/hhvm/run
 
-ADD index.php /var/www/app/
-ADD cat.jpg /var/www/app/
+#ADD index.php /var/www/app/
+#ADD cat.jpg /var/www/app/
